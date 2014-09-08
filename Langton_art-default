@@ -1,0 +1,125 @@
+#include <graphics.h>
+#include <conio.h>
+
+
+#define X_LEN 640
+#define Y_LEN 480
+
+unsigned char orgData[X_LEN][Y_LEN] = {0};//all white
+unsigned short Px,Py;
+signed char direction;
+
+void initialize(void);
+void headtowards(unsigned short Px,unsigned short Py);
+void make_a_step(signed char direction);
+void DrawDot(unsigned short Px,unsigned short Py,unsigned char val);
+
+int main()
+{
+	unsigned int turn = 0;
+	turn--;
+
+	initialize();
+
+	initgraph(X_LEN,Y_LEN);
+	
+	while(turn--)
+	{
+		headtowards(Px,Py);
+		Sleep(1);
+	}
+
+	getch();
+	closegraph();
+
+	return 0;
+}
+
+
+void initialize(void)
+{
+		Px = X_LEN/2;
+		Py = 100;
+		direction = 0;
+}
+
+void headtowards(unsigned short Px,unsigned short Py)
+{
+	//ColorJudge
+		if(orgData[Px][Py] == 0)//ant@white
+		{
+			direction--;//turn left with90.
+			
+			orgData[Px][Py] = 1;//turn black
+			DrawDot(Px,Py,1);
+			//move1
+		}
+		else if(orgData[Px][Py] == 1)//ant@black
+		{
+			direction++;//turn right with 90
+			
+			orgData[Px][Py] = 0;//turn black
+			DrawDot(Px,Py,0);
+			//move1
+		}
+
+	//BOUND
+		direction = (direction+4)%4;
+	//make astep
+		make_a_step(direction);
+
+}
+
+	void make_a_step(signed char direction)
+	{
+		switch(direction)
+		{
+			case 0: Py--;break;//up
+			case 1: Px--;break;//l
+			case 2: Py++;break;//down
+			case 3: Px++;break;//r
+			default: ;
+		}
+		
+	//BOUND
+		/*
+		if(Px >= X_LEN)
+			Px = 1;
+		if(Py >= Y_LEN)
+			Py = 1;
+		if(Px <= 0)
+			Px = X_LEN-1;
+		if(Py <= 0)
+			Py = Y_LEN-1;
+
+		*/
+		if(Px >= X_LEN)
+			Px = Px%X_LEN;
+		if(Py >= Y_LEN)
+			Py = Py%Y_LEN;
+		if(Px <= 0)
+			Px = (Px+X_LEN)%X_LEN;
+		if(Py <= 0)
+			Py = (Py+Y_LEN)%Y_LEN;
+		
+
+
+	}
+
+
+void DrawDot(unsigned short Px,unsigned short Py,unsigned char val)
+{
+	//static unsigned int color;
+	//static unsigned char dir = 0;
+
+	if(val == 0)
+	{
+		putpixel(Px,Py,val);
+	}
+	else if(val == 1)
+	{
+		putpixel(Px,Py,0xFFFFFF);
+	}
+
+	
+}

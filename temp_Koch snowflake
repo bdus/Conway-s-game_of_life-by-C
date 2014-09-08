@@ -1,0 +1,55 @@
+#include<graphics.h>
+#include<math.h>
+#include<stdio.h>
+
+#define X_LEN 640
+#define Y_LEN 480
+
+int main(void)
+{
+	unsigned short Xa,Ya,Xb,Yb,Xo,Yo,Xp,Yp;
+	unsigned short X1,Y1,X2,Y2;
+
+	float k;//,k2;
+	unsigned int length = 0;
+	
+//ini
+	Xa = 20;
+	Xb = 620;
+	Ya = Yb = 400;
+
+	Xo =(unsigned short)( (Xa + Xb)/2 );
+	Yo =(unsigned short)( (Ya + Yb)/2 );
+	k = (Yb-Ya)/(Xb-Xa);
+	//k2 = -1/k1;
+	
+	Xp =(unsigned short)( ( Xo*(1+k*tan(30))-k*(Ya-Yo) )/(1+k*tan(30)) );
+	Yp =(unsigned short)( ( Ya + k*tan(30)*Yo )/(1+k*tan(30)) );
+
+	X1 = (unsigned short)( (Xb + 2*Xa)/3 );
+	X2 = (unsigned short)( (2*Xb + Ya)/3 );
+	Y1 = (unsigned short)( (Yb + 2*Ya)/3 );
+	Y2 = (unsigned short)( (2*Yb + Ya)/3 );
+
+
+	printf("Xa = %d,Ya = %d,Xb = %d,Yb = %d,Xo = %d,Yo = %d,Xp = %d,Yp = %d,\n X1 = %d,Y1 = %d,X2 = %d,Y2 = %d\n"
+		,Xa,Ya,Xb,Yb,Xo,Yo,Xp,Yp,X1,Y1,X2,Y2);
+	
+	getchar
+	initgraph(X_LEN,Y_LEN);
+
+	setlinecolor(0xff);
+	line(Xa,Ya,Xb,Yb);
+	//setlinecolor(BLACK);
+	line(X1,Y1,X2,Y2);
+	
+	//setlinecolor(0xFF);
+	line(X1,Y1,Xp,Yp);
+	line(X2,Y2,Xp,Yp);
+	
+	
+	getchar();
+	closegraph();
+
+	return 0;
+}
